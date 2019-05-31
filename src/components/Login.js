@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
 import axios from "axios";
 import { Redirect } from 'react-router'
+import {store, loginAction} from '../store/Store'
 axios.defaults.withCredentials = true;
 
 export default class Login extends Component {
@@ -44,6 +45,8 @@ export default class Login extends Component {
             .then(res => {
                 if(res.status == 200){
                     this.setState({ auth: true});
+                    store.dispatch(loginAction(res.data.name, res.data.role));
+                    //console.log(store.getState());
                 }              
             })
   }
