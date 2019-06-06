@@ -1,29 +1,35 @@
 
 import React, { Component } from "react";
 import Menu from './Menu';
-import {store}  from '../store/Store';
+import { connect } from 'react-redux';
 
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      userName: ""
-    };
-  }
-  
-  updateStore(){
-  store.subscribe(()=> this.state.userName = store.getState().userName);
+
   }
   
   render() {
+    const { userName} = this.props;
     return (
       <div className="Home Page">
       <Menu />
       <br/>
-      Hello, {this.state.userName}
-      {console.log(store.getState())}
+      Hello, {userName}
+      {console.log(this.props)}
       </div>
     );
   }
 }
+
+
+
+function mapStateToProps(state) {
+  console.log(state);
+      userName: state.userName
+    }
+
+
+const connectedHomePage = connect(mapStateToProps)(HomePage);
+export { connectedHomePage as HomePage };

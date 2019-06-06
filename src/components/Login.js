@@ -6,8 +6,13 @@ import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
 import axios from "axios";
 import { Redirect } from 'react-router'
-import {store, loginAction} from '../store/Store'
+//import {store} from '../store/Store'
+import {userService} from '../services/UserService'
+import {loginAction, logoutAction} from  '../actions/UserActions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
 axios.defaults.withCredentials = true;
+
 
 export default class Login extends Component {
   constructor(props) {
@@ -19,15 +24,6 @@ export default class Login extends Component {
       auth: false,
     };
   }
-
-//   componentDidMount() {
-    
-//       axios.post('http://localhost:3000/api/v1/login')
-//             .then(res => {
-//                 console.log(res);
-//                 this.setState({ login: '', password: '' })
-//             })
-//   }
 
   validateForm() {
     return this.state.login.length > 0 && this.state.password.length > 0;
@@ -41,14 +37,16 @@ export default class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    axios.post('http://localhost:3000/api/v1/login', {login: this.state.login, password: this.state.password})
-            .then(res => {
-                if(res.status == 200){
-                    this.setState({ auth: true});
-                    store.dispatch(loginAction(res.data.name, res.data.role));
-                    //console.log(store.getState());
-                }              
-            })
+    userService.login(this.state.login, this.state.password) 
+    .then(
+        user => { 
+          debugger
+            //let user = JSON.parse(localStorage.getItem('user'));
+            this.setState({ auth: true});
+            this.props.dispatch(loginAction(user.name, user.role));
+            
+        });
+    
   }
 
   render() {
@@ -87,3 +85,14 @@ export default class Login extends Component {
     );
   }
 }
+
+const login = (userName, useRole) => (loginAction(userName ,useRole))
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ login}, dispatch)
+}
+
+connect(
+  null,
+  mapDispatchToProps
+)(Login);

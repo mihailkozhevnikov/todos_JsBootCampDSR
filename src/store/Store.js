@@ -3,34 +3,17 @@ import React, { Component } from "react";
 import { createStore, bindActionCreators } from "redux";
 import { Provider, connect } from "react-redux";
 
+
 export default class Store extends Component {
   constructor(props) {
     super(props);
     
   }
 }
-export const initialState = {
-    isLoggedIn: false,
-    userName: '',
-    userRole: ''
-  };
-  
-  
-  export const loginAction = (userName, userRole) => {
-    return {
-      type: 'LOG_IN',
-      userName: userName,
-      userRole: userRole
-    };
-  };
-  
-  export const logoutAction = () => {
-    return {
-      type: 'LOG_OUT'
-    };
-  };
-  
-  
+debugger
+  let user = JSON.parse(localStorage.getItem('user'));
+  const initialState = user ? { isLoggedIn: true, userName: user.name } : {};
+   
   export const reducer = function(state = initialState, action) {
     switch (action.type) {
       case 'LOG_IN':
