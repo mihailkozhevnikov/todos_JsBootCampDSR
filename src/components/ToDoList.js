@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Menu from './Menu';
 import Loader from 'react-loader-spinner';
+import { toDosService} from '../services/ToDoService';
 
 axios.defaults.withCredentials = true;
 
@@ -18,11 +19,9 @@ export default class ToDoList extends Component {
 
   componentDidMount() {
     this.setState({loading: true});
-    axios.get('http://localhost:3000/api/v1/todos')
-        .then(res => {
-            if (res.status == 200){
-                this.setState({toDos: res.data, loading: false});
-            }
+    toDosService.getTodos()
+       .then (res => {         
+                this.setState({toDos: res, loading: false});          
         });
   }
   text() {

@@ -1,7 +1,6 @@
 
   
   export const loginAction = (userName, userRole) => {
-      debugger
     return {
       type: 'LOG_IN',
       userName: userName,

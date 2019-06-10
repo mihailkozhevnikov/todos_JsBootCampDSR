@@ -11,12 +11,13 @@ export default class HomePage extends Component {
   }
   
   render() {
-    const { userName} = this.props;
+    //const { userName} = this.props;
+    let user = JSON.parse(localStorage.getItem('user'));
     return (
       <div className="Home Page">
       <Menu />
       <br/>
-      Hello, {userName}
+      Hello, {user.name}
       {console.log(this.props)}
       </div>
     );
@@ -25,11 +26,11 @@ export default class HomePage extends Component {
 
 
 
-function mapStateToProps(state) {
+/*function mapStateToProps(state) {
   console.log(state);
       userName: state.userName
     }
 
 
 const connectedHomePage = connect(mapStateToProps)(HomePage);
-export { connectedHomePage as HomePage };
+export { connectedHomePage as HomePage };*/

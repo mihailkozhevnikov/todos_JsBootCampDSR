@@ -10,7 +10,6 @@ export default class Store extends Component {
     
   }
 }
-debugger
   let user = JSON.parse(localStorage.getItem('user'));
   const initialState = user ? { isLoggedIn: true, userName: user.name } : {};
    

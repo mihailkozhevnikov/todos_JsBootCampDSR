@@ -5,6 +5,7 @@ import Login from './components/Login';
 import HomePage from './components/HomePage';
 import ToDoList from './components/ToDoList';
 import { BrowserRouter as Router, Route, Link , Redirect  } from 'react-router-dom'
+import { PrivateRoute} from './components/PrivateRouter';
 
 
 function App() {
@@ -12,9 +13,10 @@ function App() {
   return (
     <div>
         <Router> 
+          <PrivateRoute exact path="/" component={HomePage} />
           <Route exact path="/login" component={Login}/>
-          <Route exact path="/homepage" component={HomePage}/>
-          <Route exact path="/todolist" component={ToDoList}/>
+          <PrivateRoute exact path="/homepage" component={HomePage}/>
+          <PrivateRoute exact path="/todolist" component={ToDoList}/>
         </Router>
       
     </div>

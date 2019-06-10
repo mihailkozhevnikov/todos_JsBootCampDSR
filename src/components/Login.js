@@ -40,10 +40,8 @@ export default class Login extends Component {
     userService.login(this.state.login, this.state.password) 
     .then(
         user => { 
-          debugger
-            //let user = JSON.parse(localStorage.getItem('user'));
             this.setState({ auth: true});
-            this.props.dispatch(loginAction(user.name, user.role));
+            //dispatch(loginAction(user.name, user.role));
             
         });
     
