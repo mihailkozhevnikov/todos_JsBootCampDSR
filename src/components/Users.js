@@ -1,14 +1,16 @@
+
 import React, { Component } from "react";
 import axios from "axios";
 import Menu from './Menu';
 import Loader from 'react-loader-spinner';
 import { toDosService} from '../services/ToDoService';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router';
+import { userActions} from '../actions/UserActions';
 
 axios.defaults.withCredentials = true;
 
-class ToDoList extends Component {
+ class Users extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,24 +21,19 @@ class ToDoList extends Component {
   }
 
   componentDidMount() {
-    this.setState({loading: true});
-    toDosService.getTodos()
-       .then (res => {         
-                this.setState({toDos: res, loading: false});          
-        });
+    const { dispatch } = this.props;
+    dispatch(userActions.getAll());
   }
   text() {
-    return this.state.toDos.map((toDo) => {
-       return <tr key={toDo.id}>
-            <td>{toDo.id}</td>
+    const { items } = this.props;
+    return  items && items.map((userItem) => {
+       return <tr key={userItem.login}>
+            <td>{userItem.login}</td>
             <td>
-            {toDo.title}
+            {userItem.role}
             </td>
             <td>
-            {toDo.description}
-            </td>
-            <td>
-            {toDo.createdBy}
+            {userItem.name}
             </td>
         </tr>
     });
@@ -58,14 +55,13 @@ class ToDoList extends Component {
     return (
       <div className="ToDoList">
       <Menu /> <br/>
-      To Do List
+      Users
       <table>
           <thead>
               <tr>
-                  <th>id</th>
-                  <th>title</th>
-                  <th>description</th>
-                  <th>autor</th>
+                  <th>login</th>
+                  <th>role</th>
+                  <th>name</th>                
             </tr>
             </thead>
                 <tbody>
@@ -79,9 +75,11 @@ class ToDoList extends Component {
 
 function mapStateToProps(state) {
   const  { loggedIn, user } = state.authentication;
+  const  { items} = state.users;
+  console.log(state);
   return {
-       loggedIn, user
+       loggedIn, user, items
   };
 }
 
-export default ToDoList = connect(mapStateToProps)(ToDoList);
+export default Users = connect(mapStateToProps)(Users);

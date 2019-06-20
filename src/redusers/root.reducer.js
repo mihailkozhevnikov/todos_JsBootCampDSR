@@ -3,8 +3,9 @@ import { authentication } from './authentication.reducer';
 import { users } from './users.reducer';
 
 
-export default rootReducer = combineReducers({
+const rootReducer = combineReducers({
   authentication,
   users,
 });
 
+export default rootReducer;

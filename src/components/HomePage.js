@@ -2,8 +2,9 @@
 import React, { Component } from "react";
 import Menu from './Menu';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router'
 
-export default class HomePage extends Component {
+  class HomePage extends Component {
   constructor(props) {
     super(props);
 
@@ -11,14 +12,15 @@ export default class HomePage extends Component {
   }
   
   render() {
-    //const { userName} = this.props;
-    let user = JSON.parse(localStorage.getItem('user'));
+    const { user , loggedIn} = this.props;
+    if (!loggedIn) {
+      return <Redirect to='/login'/>;
+    }
     return (
       <div className="Home Page">
       <Menu />
       <br/>
       Hello, {user.name}
-      {console.log(this.props)}
       </div>
     );
   }
@@ -26,11 +28,13 @@ export default class HomePage extends Component {
 
 
 
-/*function mapStateToProps(state) {
-  console.log(state);
-      userName: state.userName
-    }
+function mapStateToProps(state) {
+  const  {user, loggedIn} = state.authentication;
+  return {
+    user, loggedIn
+  };
+}
 
 
 const connectedHomePage = connect(mapStateToProps)(HomePage);
-export { connectedHomePage as HomePage };*/
+export { connectedHomePage as HomePage };

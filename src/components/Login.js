@@ -6,9 +6,8 @@ import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
 import axios from "axios";
 import { Redirect } from 'react-router'
-//import {store} from '../store/Store'
 import {userService} from '../services/UserService'
-import {loginAction, logoutAction} from  '../actions/UserActions';
+import { userActions } from '../actions/UserActions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 axios.defaults.withCredentials = true;
@@ -19,14 +18,14 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      login: "",
+      username: "",
       password: "",
       auth: false,
     };
   }
 
   validateForm() {
-    return this.state.login.length > 0 && this.state.password.length > 0;
+    return this.state.username.length > 0 && this.state.password.length > 0;
   }
 
   handleChange = event => {
@@ -37,29 +36,28 @@ class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    userService.login(this.state.login, this.state.password) 
-    .then(
-        user => { 
-            this.setState({ auth: true});
-            this.props.dispatch(loginAction(user.name, user.role));
-            
-        });
+    this.setState({ submitted: true });
+    const { username, password } = this.state;
+    const { dispatch } = this.props;
+    if (username && password) {
+        dispatch(userActions.login(username, password));
+    }
     
   }
 
   render() {
-      const { auth } = this.state;
-     if (auth) {
+    const { loggedIn} = this.props;
+     if (loggedIn) {
        return <Redirect to='/homepage'/>;
      }
     return (
       <div className="Login">
         <Form onSubmit={this.handleSubmit}>
-          <Form.Group controlId="login" bsSize="large">
+          <Form.Group controlId="username" bsSize="large">
             <Form.Control
               autoFocus
               type="text"
-              value={this.state.login}
+              value={this.state.username}
               onChange={this.handleChange}
             />
           </Form.Group>
@@ -84,17 +82,13 @@ class Login extends Component {
   }
 }
 
-const login = (userName, useRole) => (loginAction(userName ,useRole))
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ login}, dispatch)
-}
 
 function mapStateToProps(state) {
-  const { isLoggedIn } = state.auth;
+  const  {loggingIn, loggedIn } = state.authentication;
   return {
-    isLoggedIn
+      loggingIn, loggedIn
   };
 }
 
-export default Login = connect(null, mapDispatchToProps)(Login);
+export default Login = connect(mapStateToProps)(Login);

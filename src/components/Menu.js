@@ -2,14 +2,16 @@ import React from 'react';
 import Login from './Login';
 import HomePage from './HomePage';
 import ToDoList from './ToDoList';
-import {userService} from '../services/UserService'
-import  '../styles/Menu.css'
+import {userService} from '../services/UserService';
+import { connect } from 'react-redux';
+import  '../styles/Menu.css';
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';   
+import {userActions} from "../actions/UserActions";
 
 
 
 
-export default class Menu extends React.Component {
+class Menu extends React.Component {
     constructor(props) {
         super(props);
     
@@ -18,14 +20,18 @@ export default class Menu extends React.Component {
         };
       }
     
-
+  
  handleOnClickLogOut = event => {
+    
     event.preventDefault();
-    userService.logout();
-    this.setState({ redirectTologin: true});
+    const { dispatch, } = this.props;
+    dispatch(userActions.logout());  
   }  
+  
     render() {
-        if (this.state.redirectTologin) {
+      const { loggedIn } = this.props;
+      const { user } = this.props;
+        if (!loggedIn) {
             return <Redirect to="/login" />;
           }
         return(
@@ -33,8 +39,20 @@ export default class Menu extends React.Component {
                 <div>
                     <Link className="link" to="/homepage">Home Page</Link>
                     <Link className="link" to="/todolist/">To Do List</Link>
+                    {user && user.role == 'admin' &&
+                            <Link className="link" to="/users/">Users</Link>
+                    }                   
                     <Link className="link" onClick = {this.handleOnClickLogOut} >Log Out</Link>
                 </div>
         );
     }
 }
+
+function mapStateToProps(state) {
+  const  { loggedIn, user} = state.authentication;
+  return {
+     loggedIn, user
+  };
+}
+
+export default Menu = connect(mapStateToProps)(Menu);
