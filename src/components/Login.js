@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux'
 axios.defaults.withCredentials = true;
 
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -41,7 +41,7 @@ export default class Login extends Component {
     .then(
         user => { 
             this.setState({ auth: true});
-            //dispatch(loginAction(user.name, user.role));
+            this.props.dispatch(loginAction(user.name, user.role));
             
         });
     
@@ -90,7 +90,11 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ login}, dispatch)
 }
 
-connect(
-  null,
-  mapDispatchToProps
-)(Login);
+function mapStateToProps(state) {
+  const { isLoggedIn } = state.auth;
+  return {
+    isLoggedIn
+  };
+}
+
+export default Login = connect(null, mapDispatchToProps)(Login);
