@@ -3,16 +3,22 @@ import React, { Component } from "react";
 import Menu from './Menu';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router'
+import {alertActions} from "../actions/AlertActions"
 
   class HomePage extends Component {
   constructor(props) {
     super(props);
 
+  }
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(alertActions.clear());
   }
   
   render() {
-    const { user , loggedIn} = this.props;
+  
+    const { user , loggedIn} = this.props;  
     if (!loggedIn) {
       return <Redirect to='/login'/>;
     }
@@ -25,7 +31,6 @@ import { Redirect } from 'react-router'
     );
   }
 }
-
 
 
 function mapStateToProps(state) {

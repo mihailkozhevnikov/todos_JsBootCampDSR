@@ -26,6 +26,9 @@ class App extends React.Component {
     const { alert } = this.props;
     return (
     <div>
+        {alert.message &&
+          <div className={`alert ${alert.type}`}>{alert.message.response.data.message}</div>
+        }
         <Router history={history}> 
           <PrivateRoute exact path="/" component={HomePage} />
           <Route exact path="/login" component={Login}/>

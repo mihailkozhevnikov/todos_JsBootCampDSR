@@ -1,12 +1,13 @@
 import axios from "axios";
 
 export const toDosService = {
-    getTodos,
+    getAll,
+    add
 };
 
 const baseUrl= 'http://localhost:3000/api/v1/';
 
-function getTodos() {
+function getAll() {
     return axios.get(baseUrl + 'todos')
     .then(res => {
         if(res.status == 200){           
@@ -15,6 +16,17 @@ function getTodos() {
         if(res.status == 401){           
             localStorage.removeItem('user');
     }             
+    });
+}
+
+function add(title,description) {
+    debugger
+    return axios.post(baseUrl + 'todos', { "title": title, "description" : description })
+    .then(res => {
+        if(res.status == 201){           
+                return res.data;
+        }  
+            
     });
 }
 

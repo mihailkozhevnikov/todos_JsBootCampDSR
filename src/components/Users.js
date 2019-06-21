@@ -13,10 +13,6 @@ axios.defaults.withCredentials = true;
  class Users extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-        toDos: [],
-        loading: false
-    }
  
   }
 
@@ -40,23 +36,18 @@ axios.defaults.withCredentials = true;
 }
 
   render() {
-   if(this.state.loading)
-   {
-    return(
-        <Loader 
-           type="Puff"
-           color="#00BFFF"
-           height="50"	
-           width="50"
-        />   
-       );
-   }
-
+    const { loading } = this.props;
     return (
       <div className="ToDoList">
       <Menu /> <br/>
       Users
-      <table>
+      { loading && <Loader 
+           type="Puff"
+           color="#00BFFF"
+           height="30"	
+           width="30"
+        /> }     
+      {!loading && <table>
           <thead>
               <tr>
                   <th>login</th>
@@ -67,7 +58,7 @@ axios.defaults.withCredentials = true;
                 <tbody>
                      {this.text()}
                  </tbody>
-                </table>
+                </table>}
       </div>
     );
   }
@@ -75,10 +66,9 @@ axios.defaults.withCredentials = true;
 
 function mapStateToProps(state) {
   const  { loggedIn, user } = state.authentication;
-  const  { items} = state.users;
-  console.log(state);
+  const  { items ,loading} = state.users;
   return {
-       loggedIn, user, items
+       loggedIn, user, items, loading
   };
 }
 

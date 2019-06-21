@@ -3,13 +3,12 @@ import "../styles/Login.css";
 import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Bootstrap from "react-bootstrap";
+import {alertActions} from "../actions/AlertActions";
 import axios from "axios";
 import { Redirect } from 'react-router'
-import {userService} from '../services/UserService'
 import { userActions } from '../actions/UserActions';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'
+import Loader from 'react-loader-spinner';
 axios.defaults.withCredentials = true;
 
 
@@ -40,19 +39,20 @@ class Login extends Component {
     const { username, password } = this.state;
     const { dispatch } = this.props;
     if (username && password) {
+        dispatch(alertActions.clear());
         dispatch(userActions.login(username, password));
     }
     
   }
 
   render() {
-    const { loggedIn} = this.props;
+    const { loggedIn, loggingIn} = this.props;
      if (loggedIn) {
        return <Redirect to='/homepage'/>;
      }
     return (
       <div className="Login">
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} className="col-md-6">
           <Form.Group controlId="username" bsSize="large">
             <Form.Control
               autoFocus
@@ -69,14 +69,22 @@ class Login extends Component {
             />
           </Form.Group>
           <Button
-            block
-            bsSize="large"
+             className="btn btn-primary col-md-6"
             disabled={!this.validateForm()}
             type="submit"
           >
             Login
           </Button>
         </Form>
+        {
+        loggingIn &&
+               <Loader 
+               type="Puff"
+               color="#00BFFF"
+               height="30"	
+               width="30"
+            />  
+      }
       </div>
     );
   }
