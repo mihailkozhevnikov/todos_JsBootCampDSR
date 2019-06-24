@@ -1,9 +1,7 @@
-
 import React, { Component } from "react";
 import axios from "axios";
 import Menu from './Menu';
 import Loader from 'react-loader-spinner';
-import { toDosService} from '../services/ToDoService';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { userActions} from '../actions/UserActions';
@@ -36,7 +34,12 @@ axios.defaults.withCredentials = true;
 }
 
   render() {
-    const { loading } = this.props;
+    
+    const { loading ,user} = this.props;
+    if (user.role != "admin")
+    {
+      return <Redirect to="/login" />;
+    }
     return (
       <div className="ToDoList">
       <Menu /> <br/>

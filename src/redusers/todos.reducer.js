@@ -17,24 +17,33 @@ export function todos(state = {}, action) {
 
       case todoConstants.ADD_REQUEST:
         return {
+          ...state,
           loading: true
         };
       case todoConstants.ADD_SUCCESS:
-        return {
-          todosItems: [
-            ...state.todosItems,
-            {
-              id: action.todo.id,
-              title: action.todo.title,
-              description: action.todo.description,
-              createdBy: action.todo.createdBy
-            }
-          ]
+        return {    
+            todosItems: [...state.todosItems, action.todo]
         };
       case todoConstants.ADD_FAILURE:
         return { 
           error: action.error
         };
+
+
+        case todoConstants.DELETE_REQUEST:
+            return {
+              ...state,
+              loading: true
+            };
+          case todoConstants.DELETE_SUCCESS:
+            debugger
+            return {    
+                todosItems: state.todosItems.filter(item => item.id !== action.id)
+            };
+          case todoConstants.DELETE_FAILURE:
+            return { 
+              error: action.error
+            };
     
     default:
       return state

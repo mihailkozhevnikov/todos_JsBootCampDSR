@@ -5,7 +5,8 @@ import { alertActions } from './AlertActions';
 
 export const todosActions = {
     getAll,
-    add
+    add,
+    deleteByid
 };
 
 function getAll() {
@@ -36,5 +37,20 @@ function add(title,description) {
     function request() { return { type: todoConstants.ADD_REQUEST } }
     function success(todo) { return { type: todoConstants.ADD_SUCCESS, todo } }
     function failure(error) { return { type: todoConstants.ADD_FAILURE, error } }
+}
+
+function deleteByid(id) {
+    return dispatch => {
+        dispatch(request());
+        toDosService.deleteByid(id)
+            .then(
+                id => dispatch(success(id)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: todoConstants.DELETE_REQUEST } }
+    function success(id) { return { type: todoConstants.DELETE_SUCCESS, id } }
+    function failure(error) { return { type: todoConstants.DELETE_FAILURE, error } }
 }
 

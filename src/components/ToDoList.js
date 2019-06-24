@@ -24,7 +24,7 @@ class ToDoList extends Component {
     dispatch(todosActions.getAll());
   }
   text() {
-    const { todosItems } = this.props;
+    const { todosItems, user } = this.props;
     return todosItems && todosItems.map((toDo) => {
        return <tr key={toDo.id}>
             <td>{toDo.id}</td>
@@ -37,24 +37,33 @@ class ToDoList extends Component {
             <td>
             {toDo.createdBy}
             </td>
+            <td>
+            {user && (user.role=="admin"||user.role==toDo.createdBy) && <button onClick = {this.handleDeleteTodo(toDo.id)}> delete</button>}
+            </td>
         </tr>
     });
 }
 
 handleChange = event => {
-  debugger
   this.setState({
     [event.target.id]: event.target.value
   });
 }
 
-handleSubmit = event => {
+handleAddSubmit = event => {
   event.preventDefault();
   const { newTodoTitle, newTodoDescription } = this.state;
   const { dispatch } = this.props;
   dispatch(alertActions.clear());
   dispatch(todosActions.add(newTodoTitle, newTodoDescription));
+}
 
+handleDeleteTodo(id) {
+  return (e) => {
+    const { dispatch } = this.props;
+    dispatch(alertActions.clear());
+    dispatch(todosActions.deleteByid(id));
+  }
 }
 
   render() {
@@ -74,7 +83,7 @@ handleSubmit = event => {
       }
       { !loading &&
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleAddSubmit}>
         <input onChange={this.handleChange} value={this.state.newTodoTitle}  id ="newTodoTitle" placeholder="Title" type = "text"/>
         <input onChange={this.handleChange} value={this.state.newTodoDescription} id ="newTodoDescription" placeholder="Description"  type = "text"/>
         <button>Add ToDo</button>
@@ -87,6 +96,7 @@ handleSubmit = event => {
                     <th>title</th>
                     <th>description</th>
                     <th>autor</th>
+                    <th></th>
               </tr>
               </thead>
                   <tbody>
