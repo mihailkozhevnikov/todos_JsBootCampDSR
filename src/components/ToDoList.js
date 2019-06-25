@@ -3,7 +3,6 @@ import axios from "axios";
 import Menu from './Menu';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import { todosActions} from '../actions/TodosActions';
 import { alertActions} from "../actions/AlertActions";
 
@@ -38,7 +37,7 @@ class ToDoList extends Component {
             {toDo.createdBy}
             </td>
             <td>
-            {user && (user.role=="admin"||user.role==toDo.createdBy) && <button onClick = {this.handleDeleteTodo(toDo.id)}> delete</button>}
+            {user && (user.role=="admin"||user.role==toDo.createdBy) && <button className="btn btn-danger" onClick = {this.handleDeleteTodo(toDo.id)}> delete</button>}
             </td>
         </tr>
     });
@@ -83,13 +82,17 @@ handleDeleteTodo(id) {
       }
       { !loading &&
       <div>
-        <form onSubmit={this.handleAddSubmit}>
-        <input onChange={this.handleChange} value={this.state.newTodoTitle}  id ="newTodoTitle" placeholder="Title" type = "text"/>
-        <input onChange={this.handleChange} value={this.state.newTodoDescription} id ="newTodoDescription" placeholder="Description"  type = "text"/>
-        <button>Add ToDo</button>
+
+        <form onSubmit={this.handleAddSubmit} className="form-inline">
+        <div className="form-group">
+          <input className="form-control" onChange={this.handleChange} value={this.state.newTodoTitle}  id ="newTodoTitle" placeholder="Title" type = "text"/>
+          <input className="form-control" onChange={this.handleChange} value={this.state.newTodoDescription} id ="newTodoDescription" placeholder="Description"  type = "text"/>
+          <button className="btn btn-primary">+Add ToDo</button>
+        </div>
+
         </form>
         <br/>
-        <table>
+        <table className="table">
             <thead>
                 <tr>
                     <th>id</th>

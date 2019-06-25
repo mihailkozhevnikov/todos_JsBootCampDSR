@@ -41,8 +41,7 @@ class Login extends Component {
     if (username && password) {
         dispatch(alertActions.clear());
         dispatch(userActions.login(username, password));
-    }
-    
+    }   
   }
 
   render() {
@@ -89,8 +88,6 @@ class Login extends Component {
     );
   }
 }
-
-
 
 function mapStateToProps(state) {
   const  {loggingIn, loggedIn } = state.authentication;

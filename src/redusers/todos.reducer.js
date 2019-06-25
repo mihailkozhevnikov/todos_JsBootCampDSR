@@ -26,6 +26,8 @@ export function todos(state = {}, action) {
         };
       case todoConstants.ADD_FAILURE:
         return { 
+          ...state,
+          loading: false,
           error: action.error
         };
 
@@ -42,6 +44,8 @@ export function todos(state = {}, action) {
             };
           case todoConstants.DELETE_FAILURE:
             return { 
+              ...state,
+              loading: false,
               error: action.error
             };
     

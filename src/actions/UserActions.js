@@ -2,6 +2,7 @@ import { userConstants } from '../constants/user.constants';
 import { userService } from '../services/UserService';
 import { alertActions } from './AlertActions';
 import { history } from '../helpers/history';
+import { handledError} from '../helpers/errorHandler';
 
 export const userActions = {
     login,
@@ -11,6 +12,7 @@ export const userActions = {
 
 function login(username, password) {
     return dispatch => {
+        dispatch(alertActions.clear());
         dispatch(request({ username }));
 
         userService.login(username, password)
@@ -20,8 +22,8 @@ function login(username, password) {
                     
                 },
                 error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
+                    dispatch(failure(handledError(error)));
+                    dispatch(alertActions.error(handledError(error)));
                 }
             );
     };
@@ -40,13 +42,19 @@ function logout() {
 
 function getAll() {
     return dispatch => {
+        dispatch(alertActions.clear());
         dispatch(request());
 
         userService.getAll()
             .then(
                 users => dispatch(success(users)),
-                error => dispatch(failure(error))
-            );
+                error =>
+                {
+                     dispatch(failure(error));
+                     dispatch(alertActions.error(handledError(error)));
+                }
+            )
+            ;
     };
 
     function request() { return { type: userConstants.GETALL_REQUEST } }

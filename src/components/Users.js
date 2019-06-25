@@ -36,7 +36,7 @@ axios.defaults.withCredentials = true;
   render() {
     
     const { loading ,user} = this.props;
-    if (user.role != "admin")
+    if (!user || user.role != "admin")
     {
       return <Redirect to="/login" />;
     }
@@ -50,7 +50,7 @@ axios.defaults.withCredentials = true;
            height="30"	
            width="30"
         /> }     
-      {!loading && <table>
+      {!loading && <table className="table">
           <thead>
               <tr>
                   <th>login</th>
@@ -69,7 +69,7 @@ axios.defaults.withCredentials = true;
 
 function mapStateToProps(state) {
   const  { loggedIn, user } = state.authentication;
-  const  { items ,loading} = state.users;
+  const  { items ,loading, error} = state.users;
   return {
        loggedIn, user, items, loading
   };

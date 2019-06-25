@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import Menu from './Menu';
 import { connect } from 'react-redux';

@@ -1,6 +1,7 @@
 import { todoConstants } from '../constants/todo.constants';
 import { toDosService } from '../services/ToDoService';
 import { alertActions } from './AlertActions';
+import { handledError} from '../helpers/errorHandler';
 
 
 export const todosActions = {
@@ -11,11 +12,15 @@ export const todosActions = {
 
 function getAll() {
     return dispatch => {
+        dispatch(alertActions.clear());
         dispatch(request());
         toDosService.getAll()
             .then(
                 todos => dispatch(success(todos)),
-                error => dispatch(failure(error))
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(handledError(error)));
+                }
             );
     };
 
@@ -26,11 +31,18 @@ function getAll() {
 
 function add(title,description) {
     return dispatch => {
+        dispatch(alertActions.clear());
         dispatch(request());
         toDosService.add(title,description)
             .then(
-                todo => dispatch(success(todo)),
-                error => dispatch(failure(error))
+                todo =>  { 
+                    dispatch(success(todo));
+                    dispatch(alertActions.success("To Do " + todo.title + " added succsessfull"))
+                },
+                error => {
+                    dispatch(failure(handledError(error)));
+                    dispatch(alertActions.error(handledError(error)));
+                }
             );
     };
 
@@ -41,11 +53,19 @@ function add(title,description) {
 
 function deleteByid(id) {
     return dispatch => {
+        dispatch(alertActions.clear());
         dispatch(request());
         toDosService.deleteByid(id)
             .then(
-                id => dispatch(success(id)),
-                error => dispatch(failure(error))
+                id => {
+                    dispatch(success(id));
+                    dispatch(alertActions.success("To Do deleted succsessfull"))
+                },
+                error => 
+                {
+                    dispatch(failure(handledError(error)));
+                    dispatch(alertActions.error(handledError(error)));
+                }
             );
     };
 

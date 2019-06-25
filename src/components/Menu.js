@@ -1,15 +1,8 @@
 import React from 'react';
-import Login from './Login';
-import HomePage from './HomePage';
-import ToDoList from './ToDoList';
-import {userService} from '../services/UserService';
 import { connect } from 'react-redux';
 import  '../styles/Menu.css';
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';   
 import {userActions} from "../actions/UserActions";
-
-
-
 
 class Menu extends React.Component {
     constructor(props) {
@@ -19,8 +12,7 @@ class Menu extends React.Component {
           redirect: false,
         };
       }
-    
-  
+     
  handleOnClickLogOut = event => {
     
     event.preventDefault();
