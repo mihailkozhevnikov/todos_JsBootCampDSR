@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Login from './components/Login';
 import {HomePage} from './components/HomePage';
@@ -10,16 +9,12 @@ import { PrivateRoute} from './helpers/PrivateRouter';
 import { history } from './helpers/history';
 import { connect } from 'react-redux';
 import {alertActions} from './actions/AlertActions';
+import EditTodo from './components/EditTodo';
 
 class App extends React.Component {
   constructor(props) {
       super(props);
-
       const { dispatch } = this.props;
-      history.listen((location, action) => {
-          // clear alert on location change
-          dispatch(alertActions.clear());
-      });
   }
 
   render() {
@@ -35,6 +30,7 @@ class App extends React.Component {
           <PrivateRoute exact path="/homepage" component={HomePage}/>
           <PrivateRoute exact path="/users" component={Users}/>
           <PrivateRoute exact path="/todolist" component={ToDoList}/>
+          <PrivateRoute path="/edittodo/:id" component={EditTodo}></PrivateRoute>
         </Router>
       
     </div>

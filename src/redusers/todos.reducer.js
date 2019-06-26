@@ -48,6 +48,34 @@ export function todos(state = {}, action) {
               loading: false,
               error: action.error
             };
+
+            case todoConstants.GET_REQUEST:
+              return {
+                ...state,
+                loading: true
+              };
+            case todoConstants.GET_SUCCESS:
+              return {    
+                  editedItem: action.todo
+              };
+            case todoConstants.GET_FAILURE:
+              return { 
+                error: action.error
+              };
+
+              case todoConstants.UPDATE_REQUEST:
+                return {
+                  ...state,
+                  loading: true
+                };
+              case todoConstants.UPDATE_SUCCESS:
+                return {                        
+                };
+              case todoConstants.UPDATE_FAILURE:
+                return { 
+                  ...state,
+                  error: action.error
+                };
     
     default:
       return state

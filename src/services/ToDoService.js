@@ -3,7 +3,9 @@ import axios from "axios";
 export const toDosService = {
     getAll,
     add, 
-    deleteByid
+    deleteByid,
+    getToDoByid,
+    updateToDo
 };
 
 const baseUrl= 'http://localhost:3000/api/v1/';
@@ -22,22 +24,29 @@ function getAll() {
 
 function add(title,description) {
     return axios.post(baseUrl + 'todos', { "title": title, "description" : description })
-    .then(res => {
-        if(res.status == 201){ 
-            debugger          
-                return res.data;
-        }  
-            
+    .then(res => {      
+                return res.data;       
+    });
+}
+
+function updateToDo(id, title,description) {
+    return axios.put(baseUrl + 'todos/'+ id, { "title": title, "description" : description })
+    .then(res => {       
+          return res.data;            
     });
 }
 
 function deleteByid(id) {
     return axios.delete(baseUrl + 'todos/'+ id)
-    .then(res => {
-        if(res.status == 204){         
-                return id;
-        }  
-            
+    .then(res => {     
+                return id;        
+    });
+}
+
+function getToDoByid(id) {
+    return axios.get(baseUrl + 'todos/'+ id)
+    .then(res => {    
+                return res.data;            
     });
 }
 

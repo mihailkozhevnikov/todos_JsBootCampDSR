@@ -7,7 +7,9 @@ import { handledError} from '../helpers/errorHandler';
 export const todosActions = {
     getAll,
     add,
-    deleteByid
+    deleteByid,
+    getToDoByid,
+    updateTodo
 };
 
 function getAll() {
@@ -72,5 +74,51 @@ function deleteByid(id) {
     function request() { return { type: todoConstants.DELETE_REQUEST } }
     function success(id) { return { type: todoConstants.DELETE_SUCCESS, id } }
     function failure(error) { return { type: todoConstants.DELETE_FAILURE, error } }
+}
+
+function getToDoByid(id) {
+    return dispatch => {
+        dispatch(alertActions.clear());
+        dispatch(request());
+        toDosService.getToDoByid(id)
+            .then(
+                todo => {
+                    dispatch(success(todo));
+                    dispatch(alertActions.success("To Do " + todo.title + " received succsessfull"))
+                },
+                error => 
+                {
+                    dispatch(failure(handledError(error)));
+                    dispatch(alertActions.error(handledError(error)));
+                }
+            );
+    };
+
+    function request() { return { type: todoConstants.GET_REQUEST } }
+    function success(todo) { return { type: todoConstants.GET_SUCCESS, todo } }
+    function failure(error) { return { type: todoConstants.GET_FAILURE, error } }
+}
+
+function updateTodo(id ,title,description) {
+    return dispatch => {
+        dispatch(alertActions.clear());
+        dispatch(request());
+        toDosService.updateToDo(id, title,description)
+            .then(
+                res => {
+                    dispatch(success());
+                    dispatch(alertActions.success("To Do updated succsessfull"))
+                },
+                error => 
+                {
+                    dispatch(failure(handledError(error)));
+                    dispatch(alertActions.error(handledError(error)));
+                }
+            );
+    };
+
+    function request() { return { type: todoConstants.GET_REQUEST } }
+    function success() { return { type: todoConstants.GET_SUCCESS } }
+    function failure(error) { return { type: todoConstants.GET_FAILURE, error } }
 }
 

@@ -5,6 +5,7 @@ import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import { todosActions} from '../actions/TodosActions';
 import { alertActions} from "../actions/AlertActions";
+import { Link  } from 'react-router-dom';
 
 axios.defaults.withCredentials = true;
 
@@ -37,6 +38,8 @@ class ToDoList extends Component {
             {toDo.createdBy}
             </td>
             <td>
+            {user && (user.role=="admin"||user.role==toDo.createdBy) && <Link to={"/edittodo/"+toDo.id}  
+              style = {{ marginRight: '10px'}} className="btn btn-warning"> Edit</Link>}
             {user && (user.role=="admin"||user.role==toDo.createdBy) && <button className="btn btn-danger" onClick = {this.handleDeleteTodo(toDo.id)}> delete</button>}
             </td>
         </tr>
@@ -66,6 +69,7 @@ handleDeleteTodo(id) {
 }
 
   render() {
+
     const { loading } = this.props;
     return (
       <div className="ToDoList">
@@ -116,7 +120,7 @@ handleDeleteTodo(id) {
 
 function mapStateToProps(state) {
   const  { loggedIn, user } = state.authentication;
-  const  { todosItems, loading } = state.todos;
+  const  { todosItems, loading, editedItem } = state.todos;
   return {
        loggedIn, user, todosItems, loading
   };
