@@ -14,7 +14,6 @@ function login(username, password) {
 
     return axios.post(baseUrl + 'login', {login: username, password: password})
     .then(res => {
-           localStorage.setItem('user', JSON.stringify(res.data));
                 return res.data;     
     });
 }

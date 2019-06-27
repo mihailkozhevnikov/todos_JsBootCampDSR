@@ -6,12 +6,15 @@ import { connect } from 'react-redux';
 import { todosActions} from '../actions/TodosActions';
 import { alertActions} from "../actions/AlertActions";
 import { Link  } from 'react-router-dom';
+import { withFormik, Form, Field, validateYupSchema} from 'formik';
+import * as yup from 'yup'
 
 axios.defaults.withCredentials = true;
 
 class ToDoList extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       newTodoTitle: "",
       newTodoDescription: "",
@@ -71,6 +74,26 @@ handleDeleteTodo(id) {
   render() {
 
     const { loading } = this.props;
+    const {values, errors, touched} = '';
+    const Form = withFormik({
+      mapPropsToValues({newTodoTitle, newTodoDescription}){
+        return 
+        {
+          newTodoTitle: newTodoTitle || '' ,
+          newTodoDescription: newTodoDescription || ''
+        }
+      },
+        validationSchema: yup.object().shape()({
+          newTodoTitle: yup.string().required("Title is Required."),
+          newTodoDescription: yup
+            .string().required("Description is Required."),
+        }),
+        handleSubmit(values){
+          console.log(values)
+        }
+      });
+
+    
     return (
       <div className="ToDoList">
       <Menu /> <br/>
@@ -86,15 +109,22 @@ handleDeleteTodo(id) {
       }
       { !loading &&
       <div>
+        <Form>
+          <div>
+            <Field type="text" name = "newTodoTitle" placeholder="Title"></Field>
+            {touched.newTodoTitle && errors.newTodoTitle && <p>{errors.newTodoTitle}</p>}
+          </div>
+          <Field type="text" name = "newTodoDescription" placeholder="Description"></Field>
+        </Form>
 
-        <form onSubmit={this.handleAddSubmit} className="form-inline">
+        {/* <form onSubmit={this.handleAddSubmit} className="form-inline">
         <div className="form-group">
           <input className="form-control" onChange={this.handleChange} value={this.state.newTodoTitle}  id ="newTodoTitle" placeholder="Title" type = "text"/>
           <input className="form-control" onChange={this.handleChange} value={this.state.newTodoDescription} id ="newTodoDescription" placeholder="Description"  type = "text"/>
           <button className="btn btn-primary">+Add ToDo</button>
         </div>
 
-        </form>
+        </form> */}
         <br/>
         <table className="table">
             <thead>
@@ -120,7 +150,7 @@ handleDeleteTodo(id) {
 
 function mapStateToProps(state) {
   const  { loggedIn, user } = state.authentication;
-  const  { todosItems, loading, editedItem } = state.todos;
+  const  { todosItems, loading } = state.todos;
   return {
        loggedIn, user, todosItems, loading
   };

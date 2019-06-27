@@ -1,7 +1,6 @@
 import { userConstants } from '../constants/user.constants';
 import { userService } from '../services/UserService';
 import { alertActions } from './AlertActions';
-import { history } from '../helpers/history';
 import  {handledError} from '../helpers/errorHandler';
 
 export const userActions = {
@@ -42,7 +41,7 @@ function logout() {
 
         userService.logout()
             .then(                
-                user => { 
+                user =>{ 
                     dispatch(success());                   
                 },
                 error => {

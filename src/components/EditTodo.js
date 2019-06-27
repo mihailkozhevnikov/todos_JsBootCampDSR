@@ -9,7 +9,6 @@ import Loader from 'react-loader-spinner';
 
   constructor(props) {
     super(props);
-    const { loading, editedItem } = this.props;
     this.state = {
       editTodoTitle: '',
       editTodoDescription: '',

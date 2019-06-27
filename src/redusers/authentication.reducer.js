@@ -36,9 +36,9 @@ export function authentication(state = initialState, action) {
         case userConstants.LOGOUT_SUCCESS:
           return {
           };
-        case userConstants.LOGIN_FAILURE:
+        case userConstants.LOGOUT_FAILURE:
           return {...state,
-            loggingOut: false
+            loggingOut: false,
           };
 
           case userConstants.LOGOUT_NOT_AUTORUZED:

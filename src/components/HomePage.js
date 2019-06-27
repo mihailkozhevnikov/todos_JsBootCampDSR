@@ -10,10 +10,6 @@ import {alertActions} from "../actions/AlertActions"
 
   }
 
-  componentDidMount() {
-    const { dispatch } = this.props;
-  }
-  
   render() {
   
     const { user , loggedIn} = this.props;  
