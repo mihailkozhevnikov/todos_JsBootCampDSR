@@ -4,7 +4,8 @@ import axios from "axios";
 export const userService = {
     login,
     logout,
-    getAll
+    getAll,
+    me
 };
 
 const baseUrl= 'http://localhost:3000/api/v1/';
@@ -27,13 +28,14 @@ function getAll() {
 }
 
 function logout() {
-    // remove user from local storage to log user out
-    axios.post(baseUrl + 'logout')
+    return axios.post(baseUrl + 'logout')
     .then(res => {
-            localStorage.removeItem('user');
-            return true;          
+            return res.data;          
     });
-    
 }
-
-
+    function me() {
+        return axios.get(baseUrl + 'me')
+        .then(res => {
+                return res.data;          
+        });
+    }

@@ -1,9 +1,14 @@
+import {store} from '../store/Store';
+import { userActions} from '../actions/UserActions';
 export const handledError = (error) => {
     // Error
     if (error.response) {
         // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        //return error.response.data
+        if (error.response.status == 401)
+        {
+            store.dispatch(userActions.logoutNotAuthorized())
+        }
+
         if (error.response.data)
         {
             return error.response.data.message
@@ -20,7 +25,6 @@ export const handledError = (error) => {
         // Something happened in setting up the request that triggered an Error
         return error.message;
     }
-    return error.config;
 };
 
 

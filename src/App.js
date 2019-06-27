@@ -10,11 +10,16 @@ import { history } from './helpers/history';
 import { connect } from 'react-redux';
 import {alertActions} from './actions/AlertActions';
 import EditTodo from './components/EditTodo';
-
+import { userActions} from './actions/UserActions';
 class App extends React.Component {
   constructor(props) {
       super(props);
-      const { dispatch } = this.props;
+      
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(userActions.checkServerAuthentication());
   }
 
   render() {

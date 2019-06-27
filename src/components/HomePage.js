@@ -12,7 +12,6 @@ import {alertActions} from "../actions/AlertActions"
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(alertActions.clear());
   }
   
   render() {

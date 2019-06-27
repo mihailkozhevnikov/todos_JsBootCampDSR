@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import  '../styles/Menu.css';
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';   
 import {userActions} from "../actions/UserActions";
+import Loader from 'react-loader-spinner';
 
 class Menu extends React.Component {
     constructor(props) {
@@ -16,34 +17,40 @@ class Menu extends React.Component {
  handleOnClickLogOut = event => {
     
     event.preventDefault();
-    const { dispatch, } = this.props;
+    const { dispatch } = this.props;
     dispatch(userActions.logout());  
   }  
   
     render() {
-      const { loggedIn } = this.props;
-      const { user } = this.props;
+      const { loggedIn, loggingOut, user } = this.props;
         if (!loggedIn) {
             return <Redirect to="/login" />;
           }
         return(
             
-                <div>
+                <div>                 
                     <Link className="link" to="/homepage">Home Page</Link>
                     <Link className="link" to="/todolist/">To Do List</Link>
                     {user && user.role == 'admin' &&
                             <Link className="link" to="/users/">Users</Link>
                     }                   
                     <Link className="link" onClick = {this.handleOnClickLogOut} >Log Out</Link>
+                    {loggingOut && 
+               <Loader 
+               type="Puff"
+               color="#00BFFF"
+               height="30"	
+               width="30"
+            />   }
                 </div>
         );
     }
 }
 
 function mapStateToProps(state) {
-  const  { loggedIn, user} = state.authentication;
+  const  { loggedIn, user, loggingOut} = state.authentication;
   return {
-     loggedIn, user
+     loggedIn, user, loggingOut
   };
 }
 

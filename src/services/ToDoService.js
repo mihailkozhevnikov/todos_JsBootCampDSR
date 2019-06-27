@@ -12,13 +12,8 @@ const baseUrl= 'http://localhost:3000/api/v1/';
 
 function getAll() {
     return axios.get(baseUrl + 'todos')
-    .then(res => {
-        if(res.status == 200){           
-                return res.data;
-        }  
-        if(res.status == 401){           
-            localStorage.removeItem('user');
-    }             
+    .then(res => {        
+                return res.data;               
     });
 }
 
