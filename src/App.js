@@ -5,11 +5,12 @@ import {HomePage} from './components/HomePage';
 import Users from "./components/Users";
 import ToDoList from './components/ToDoList';
 import { BrowserRouter as Router, Route} from 'react-router-dom'
-import { PrivateRoute} from './helpers/PrivateRouter';
+import { PrivateRoute} from './components/PrivateRouter';
 import { history } from './helpers/history';
 import { connect } from 'react-redux';
 import EditTodo from './components/EditTodo';
 import { userActions} from './actions/UserActions';
+import Loader from 'react-loader-spinner';
 class App extends React.Component {
   constructor(props) {
       super(props);
@@ -24,12 +25,15 @@ class App extends React.Component {
   
 
   render() {
-    const { alert, user } = this.props;
+    const { alert, user, checkingAuthentication } = this.props;
     return (
+      
     <div>
         {alert.message &&
           <div className={`alert ${alert.type}`}>{alert.message}</div>
         }
+        
+        {!checkingAuthentication  &&
         <Router history={history}> 
           <PrivateRoute exact path="/" component={HomePage} role = {user ? user.role:""} canactivate={["admin","user"]} />
           <Route exact path="/login" component={Login}/>
@@ -38,17 +42,27 @@ class App extends React.Component {
           <PrivateRoute exact path="/todolist" role = {user ? user.role:""} canactivate={["admin","user"]} component={ToDoList}/>
           <PrivateRoute path="/edittodo/:id" role = {user ? user.role:""} canactivate={["admin","user"]} component={EditTodo}></PrivateRoute>
         </Router>
-      
+        }
+
+{
+          checkingAuthentication &&
+               <Loader 
+               type="Puff"
+               color="#00BFFF"
+               height="30"	
+               width="30"
+            />  
+      }
     </div>
   );
 }
 }
 
 function mapStateToProps(state) {
-  const { user } = state.authentication;
+  const { user, checkingAuthentication } = state.authentication;
   const { alert } = state;
   return {
-      alert, user
+      alert, user, checkingAuthentication
   };
 }
 

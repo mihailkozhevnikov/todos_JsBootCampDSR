@@ -22,8 +22,8 @@ class Menu extends React.Component {
   }  
   
     render() {
-      const { loggedIn, loggingOut, user } = this.props;
-        if (!loggedIn) {
+      const { loggedIn, loggingOut, user, checkingAuthentication } = this.props;
+        if (!loggedIn && !checkingAuthentication) {         
             return <Redirect to="/login" />;
           }
         return(
@@ -48,9 +48,9 @@ class Menu extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const  { loggedIn, user, loggingOut} = state.authentication;
+  const  { loggedIn, user, loggingOut, checkingAuthentication} = state.authentication;
   return {
-     loggedIn, user, loggingOut
+     loggedIn, user, loggingOut, checkingAuthentication
   };
 }
 

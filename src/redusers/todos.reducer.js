@@ -39,7 +39,9 @@ export function todos(state = {}, action) {
             };
           case todoConstants.DELETE_SUCCESS:
             debugger
-            return {    
+            return {   
+              ...state,
+              loading: false, 
                 todosItems: state.todosItems.filter(item => item.id !== action.id)
             };
           case todoConstants.DELETE_FAILURE:
@@ -55,11 +57,15 @@ export function todos(state = {}, action) {
                 loading: true
               };
             case todoConstants.GET_SUCCESS:
-              return {    
-                  editedItem: action.todo
+              return {   
+                ...state,
+                loading: false,
+                editedItem: action.todo
               };
             case todoConstants.GET_FAILURE:
               return { 
+                ...state,
+                loading: false,
                 error: action.error
               };
 
@@ -69,11 +75,14 @@ export function todos(state = {}, action) {
                   loading: true
                 };
               case todoConstants.UPDATE_SUCCESS:
-                return {                        
+                return {  
+                  ...state,
+                  loading: false,                      
                 };
               case todoConstants.UPDATE_FAILURE:
                 return { 
                   ...state,
+                  loading: false,
                   error: action.error
                 };
     

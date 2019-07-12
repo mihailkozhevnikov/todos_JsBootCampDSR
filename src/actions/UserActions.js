@@ -100,9 +100,15 @@ function checkServerAuthentication() {
                     
                 },
                 error => {
-                    dispatch(failure(handledError(error)));
-                    dispatch(alertActions.error(handledError(error)));
-                }
+         if (error.response.data)
+            {
+                dispatch(failure(error.response.data.message));    
+            }
+            else{
+                dispatch(failure(error.response.statusText + " " + error.response.status));
+            }
+                }                                 
+                
             );
     };
 

@@ -1,32 +1,53 @@
 import { userConstants } from '../constants/user.constants';
 
-const initialState = {};
+const initialState = {
+  checkingAuthentication: true,
+  loggingIn: false,
+  user: null,
+  loggedIn:  false,
+  loggingOut:  false
+};
 
 export function authentication(state = initialState, action) {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
       return {
+        ...state,
         loggingIn: true,
       };
     case userConstants.LOGIN_SUCCESS:
       return {
+        ...state,
+        loggingIn: false,
         loggedIn: true,
         user: action.user
       };
     case userConstants.LOGIN_FAILURE:
-      return {};
+      return {
+        loggingIn: false,
+        user: null,
+        loggedIn:  false,
+        loggingOut:  false
+      };
 
       case userConstants.ME_REQUEST:
         return {
+          ...state,
           loggingIn: true,
+          checkingAuthentication: true,
         };
       case userConstants.ME_SUCCESS:
         return {
+          ...state,
           loggedIn: true,
-          user: action.user
+          loggingIn: false,
+          user: action.user,
+          checkingAuthentication: false
         };
       case userConstants.ME_FAILURE:
-        return {};
+        return {
+          checkingAuthentication: false
+        };
 
         case userConstants.LOGOUT_REQUEST:
           return {
@@ -42,7 +63,13 @@ export function authentication(state = initialState, action) {
           };
 
           case userConstants.LOGOUT_NOT_AUTORUZED:
-          return {};
+          return {
+            checkingAuthentication: false,
+            loggingIn: false,
+            user: null,
+            loggedIn:  false,
+            loggingOut:  false
+          };
 
     default:
       return state
